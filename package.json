@@ -1,0 +1,35 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ritam1105/IoT-WebApp#readme",
+  "bugs": {
+    "url": "https://github.com/ritam1105/IoT-WebApp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ritam1105/IoT-WebApp.git"
+  },
+  "license": "ISC",
+  "author": "Ritam Majumdar",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "concurrently \"nodemon app.js\" \"npm run tw\"",
+    "tw": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css --watch --silent",
+    "build:css": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css",
+    "dev":"nodemon app.js"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2"
+  },
+  "keywords": []
+}

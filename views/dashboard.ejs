@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <link rel="icon" href="/images/logo.png">
+    <title>Matri Ganga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+        body { font-family: 'DM Sans', sans-serif; }
+        .mono { font-family: 'Space Mono', monospace; }
+        .sensor-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .sensor-card:hover { transform: translateY(-3px); }
+        .status-dot { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+    <div class="max-w-6xl mx-auto px-6 py-8">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-10">
+            <div class="flex items-center gap-4">
+                <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover opacity-90">
+                <div>
+                    <h1 class="mono text-xl font-bold text-white tracking-tight">Matri Ganga</h1>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="status-dot w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                        <span class="text-xs text-slate-400 mono">LIVE MONITORING</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-slate-500 text-sm mono" id="live-time"></span>
+                <a href="index.html">
+                    <button id="dashboard-logout-btn"
+                        class="mono text-xs px-4 py-2 rounded border border-slate-700 text-slate-400 hover:border-red-500 hover:text-red-400 transition-colors duration-200">
+                        LOGOUT
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sensor Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+            <!-- Temperature -->
+            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs mono text-slate-500 tracking-widest">TEMP</span>
+                    <span class="text-orange-400 text-lg">🌡</span>
+                </div>
+                <h2 class="temp-avg mono text-3xl font-bold text-white mb-1">--</h2>
+                <p class="text-slate-500 text-xs mb-3">°C Average</p>
+                <div class="h-px bg-slate-800 mb-3"></div>
+                <p class="under-text text-xs text-slate-600 mono">-- % Δ past hour</p>
+            </div>
+
+            <!-- Turbidity -->
+            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-sky-500/5">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs mono text-slate-500 tracking-widest">TURB</span>
+                    <span class="text-sky-400 text-lg">💧</span>
+                </div>
+                <h2 class="turbidity-avg mono text-3xl font-bold text-white mb-1">--</h2>
+                <p class="text-slate-500 text-xs mb-3">NTU Average</p>
+                <div class="h-px bg-slate-800 mb-3"></div>
+                <p class="under-text text-xs text-slate-600 mono">-- % Δ past hour</p>
+            </div>
+
+            <!-- pH -->
+            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs mono text-slate-500 tracking-widest">PH</span>
+                    <span class="text-violet-400 text-lg">⚗️</span>
+                </div>
+                <h2 class="ph-avg mono text-3xl font-bold text-white mb-1">--</h2>
+                <p class="text-slate-500 text-xs mb-3">pH Average</p>
+                <div class="h-px bg-slate-800 mb-3"></div>
+                <p class="under-text text-xs text-slate-600 mono">-- % Δ past hour</p>
+            </div>
+
+            <!-- Water Level -->
+            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-teal-500/40 hover:shadow-lg hover:shadow-teal-500/5">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs mono text-slate-500 tracking-widest">LEVEL</span>
+                    <span class="text-teal-400 text-lg">📊</span>
+                </div>
+                <h2 class="water-avg mono text-3xl font-bold text-white mb-1">--</h2>
+                <p class="text-slate-500 text-xs mb-3">cm Average</p>
+                <div class="h-px bg-slate-800 mb-3"></div>
+                <p class="under-text text-xs text-slate-600 mono">-- % Δ past hour</p>
+            </div>
+
+        </div>
+
+        <!-- Water Quality Info -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h2 class="text-sm mono text-slate-400 tracking-widest">WATER QUALITY</h2>
+            <div class="flex flex-col sm:flex-row gap-6">
+                <div>
+                    <p class="text-xs text-slate-600 mono mb-1">DRINKABLE</p>
+                    <p class="percentage mono text-2xl font-bold text-white">-- %</p>
+                </div>
+                <div class="hidden sm:block w-px bg-slate-800"></div>
+                <div>
+                    <p class="text-xs text-slate-600 mono mb-1">GRADE</p>
+                    <p class="grade mono text-2xl font-bold text-emerald-400">--</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex gap-3 mb-8">
+            <button id="start"
+                class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-colors duration-200 tracking-widest">
+                ▶ START
+            </button>
+            <button id="stop"
+                class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-slate-800 hover:bg-red-500/20 border border-slate-700 hover:border-red-500/50 text-slate-300 hover:text-red-400 transition-all duration-200 tracking-widest">
+                ■ STOP
+            </button>
+            <button id="restart"
+                class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-slate-800 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 text-slate-300 hover:text-amber-400 transition-all duration-200 tracking-widest">
+                ↺ RESTART
+            </button>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+            <div class="grid grid-cols-6 px-6 py-3 bg-slate-800/50 border-b border-slate-800">
+                <div class="mono text-xs text-slate-500 tracking-widest">ID</div>
+                <div class="mono text-xs text-slate-500 tracking-widest col-span-2">DATE & TIME</div>
+                <div class="mono text-xs text-slate-500 tracking-widest">TEMP (°C)</div>
+                <div class="mono text-xs text-slate-500 tracking-widest">TURB (NTU)</div>
+                <div class="mono text-xs text-slate-500 tracking-widest">pH / LEVEL</div>
+            </div>
+            <!-- Empty state -->
+            <div class="px-6 py-12 text-center">
+                <p class="mono text-slate-700 text-sm">No data received yet.</p>
+                <p class="mono text-slate-800 text-xs mt-1">Press START to begin monitoring.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="scripts/dashboard.js"></script>
+    <script>
+        // Live clock
+        function updateTime() {
+            const el = document.getElementById('live-time');
+            if (el) el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false });
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
