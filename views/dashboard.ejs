@@ -50,7 +50,7 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
             <!-- Temperature -->
-            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5">
+            <div class="temperature sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">TEMP</span>
                     <span class="text-orange-400 text-lg">🌡</span>
@@ -62,7 +62,7 @@
             </div>
 
             <!-- Turbidity -->
-            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-sky-500/5">
+            <div class="turbidity sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-sky-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">TURB</span>
                     <span class="text-sky-400 text-lg">💧</span>
@@ -74,7 +74,7 @@
             </div>
 
             <!-- pH -->
-            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5">
+            <div class="ph sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">PH</span>
                     <span class="text-violet-400 text-lg">⚗️</span>
@@ -86,7 +86,7 @@
             </div>
 
             <!-- Water Level -->
-            <div class="sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-teal-500/40 hover:shadow-lg hover:shadow-teal-500/5">
+            <div class="water-level sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-teal-500/40 hover:shadow-lg hover:shadow-teal-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">LEVEL</span>
                     <span class="text-teal-400 text-lg">📊</span>
@@ -141,15 +141,15 @@
                 <div class="mono text-xs text-slate-500 tracking-widest">pH / LEVEL</div>
             </div>
             <!-- Empty state -->
-            <div class="px-6 py-12 text-center">
-                <p class="mono text-slate-700 text-sm">No data received yet.</p>
-                <p class="mono text-slate-800 text-xs mt-1">Press START to begin monitoring.</p>
+            <div class="data-list">
+                <div class="px-6 py-12 text-center empty-state">
+                    <p class="mono text-slate-700 text-sm">No data received yet.</p>
+                    <p class="mono text-slate-800 text-xs mt-1">Press START to begin monitoring.</p>
+                </div>
             </div>
         </div>
 
     </div>
-
-    <script src="scripts/dashboard.js"></script>
     <script>
         // Live clock
         function updateTime() {
@@ -159,5 +159,6 @@
         updateTime();
         setInterval(updateTime, 1000);
     </script>
+    <script src="/scripts/dashboard.js"></script>
 </body>
 </html>

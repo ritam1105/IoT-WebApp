@@ -18,12 +18,16 @@
     "start": "concurrently \"nodemon app.js\" \"npm run tw\"",
     "tw": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css --watch --silent",
     "build:css": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css",
-    "dev":"nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.2.2",
+    "dotenv": "^17.3.1",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
+    "firebase-admin": "^13.7.0",
+    "mongoose": "^9.3.2",
+    "node-cron": "^4.2.1",
     "nodemon": "^3.1.14"
   },
   "devDependencies": {

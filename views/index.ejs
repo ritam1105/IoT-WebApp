@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <link rel="icon" href="/images/logo.png">
+    <title>Matri Ganga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+        body { font-family: 'DM Sans', sans-serif; }
+        .mono { font-family: 'Space Mono', monospace; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.7s ease both; }
+        .fade-up-2 { animation: fadeUp 0.7s 0.15s ease both; }
+        .fade-up-3 { animation: fadeUp 0.7s 0.3s ease both; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Main -->
+    <main class="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
+
+        <!-- Logo + Brand -->
+        <div class="fade-up flex flex-col items-center gap-4 mb-12">
+            <img src="/images/logo.png" alt="Matri Ganga Logo"
+                class="w-20 h-20 rounded-full object-cover ring-2 ring-slate-700 shadow-lg shadow-slate-900">
+            <div>
+                <p class="mono text-xs text-slate-500 tracking-widest mb-1">PRESENTED BY</p>
+                <h1 class="mono text-2xl font-bold text-white tracking-tight">Aqua Innovators</h1>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="fade-up-2 bg-slate-900 border border-slate-800 rounded-2xl p-8 max-w-lg w-full mb-8 text-left">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                <span class="mono text-xs text-slate-400 tracking-widest">WATER QUALITY MONITORING SYSTEM</span>
+            </div>
+            <h2 class="text-xl font-semibold text-white mb-3 leading-snug">
+                Welcome to the Ganga River<br>Real-Time Monitor
+            </h2>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                A cutting-edge platform designed to forecast and monitor the water quality
+                of the Ganga River in real time — tracking temperature, turbidity, pH,
+                and water levels continuously.
+            </p>
+        </div>
+
+        <!-- Login Button -->
+        <div class="fade-up-3">
+            <a href="/login">
+                <button id="btn"
+                    class="mono text-xs font-bold px-10 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-colors duration-200 tracking-widest shadow-lg shadow-emerald-500/20">
+                    LOGIN →
+                </button>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 border-t border-slate-800">
+        <p class="mono text-xs text-slate-600">
+            © 2025 Aqua-Innovators. All rights reserved. Designed by Ritam Majumdar
+        </p>
+    </footer>
+
+</body>
+</html>
