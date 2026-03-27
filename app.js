@@ -3,7 +3,10 @@ require('dotenv').config();
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
-const userRoutes = require('./routes/userRoutes');
+const session = require('express-session');
+const MongoStore = require('connect-mongo').default || require('connect-mongo');
+
+const userRoutes   = require('./routes/userRoutes');
 const sensorRoutes = require('./routes/sensor');
 
 app.use(express.static('public'));
@@ -12,14 +15,29 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// MongoDB
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error(err));
 
+// Session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }),
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+}));
+
+// Routes
+app.use('/', userRoutes);
 app.use('/sensor', sensorRoutes);
-app.use(userRoutes);
-app.get('/graph/:sessionId/:sensor', (req, res) =>
-    res.render('graph', { sensor: req.params.sensor, sessionId: req.params.sessionId })
-);
+app.get('/graph/:sessionId/:sensor', (req, res) => {
+    if (!req.session.userId) return res.redirect('/login');
+    res.render('graph', {
+        sensor:    req.params.sensor,
+        sessionId: req.params.sessionId
+    });
+});
 
 app.listen(3000, () => console.log('Server running at http://localhost:3000'));

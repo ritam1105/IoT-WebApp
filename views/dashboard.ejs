@@ -63,8 +63,11 @@
             </div>
             <div class="flex items-center gap-4">
                 <span class="text-slate-500 text-sm mono" id="live-time"></span>
-                <a href="/">
-                    <button id="dashboard-logout-btn"
+                <span class="mono text-xs text-emerald-400">
+                    <%= user.firstName %>
+                </span>
+                <a href="/logout">
+                    <button
                         class="mono text-xs px-4 py-2 rounded border border-slate-700 text-slate-400 hover:border-red-500 hover:text-red-400 transition-colors duration-200">
                         LOGOUT
                     </button>
