@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/output.css">
-    <title><%= sensor %> Graph — Matri Ganga</title>
+    <link rel="icon" href="/images/logo.png">
+    <title><%= sensor %> — Matri Ganga</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500&display=swap');
@@ -14,23 +15,58 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen px-6 py-10">
 
-    <a href="/" class="mono text-xs text-slate-500 hover:text-slate-300 mb-8 inline-block">← BACK</a>
+    <a href="/dashboard" class="mono text-xs text-slate-500 hover:text-slate-300 mb-8 inline-block transition-colors">← BACK TO DASHBOARD</a>
 
-    <h1 class="mono text-2xl font-bold text-white mb-2"><%= sensor.toUpperCase() %></h1>
-    <p class="text-slate-500 text-sm mb-8">Last 100 readings</p>
+    <div class="flex items-end gap-4 mb-2">
+        <h1 class="mono text-2xl font-bold text-white"><%= sensor.toUpperCase() %></h1>
+        <% 
+            const units = { temperature: '°C', pH: 'pH', waterLevel: 'cm', turbidity: 'NTU' };
+            const colors = { temperature: '#fb923c', pH: '#a78bfa', waterLevel: '#2dd4bf', turbidity: '#38bdf8' };
+        %>
+        <span class="mono text-sm text-slate-500 mb-1"><%= units[sensor] || '' %></span>
+    </div>
+    <p class="text-slate-600 text-xs mono mb-8">Session: <%= sessionId %></p>
 
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-        <canvas id="sensorChart"></canvas>
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-4">
+        <canvas id="sensorChart" height="100"></canvas>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-3 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <p class="mono text-xs text-slate-600 mb-1">MIN</p>
+            <p class="mono text-xl font-bold text-white" id="stat-min">--</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <p class="mono text-xs text-slate-600 mb-1">AVG</p>
+            <p class="mono text-xl font-bold text-white" id="stat-avg">--</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <p class="mono text-xs text-slate-600 mb-1">MAX</p>
+            <p class="mono text-xl font-bold text-white" id="stat-max">--</p>
+        </div>
     </div>
 
     <script>
-        const sensor = '<%= sensor %>';
+        const sensor    = '<%= sensor %>';
+        const sessionId = '<%= sessionId %>';
+        const color     = '<%= colors[sensor] || "#34d399" %>';
 
-        fetch(`/sensor/graph/${sensor}`)
+        fetch(`/sensor/graph/${sessionId}/${sensor}`)
             .then(r => r.json())
             .then(data => {
-                const labels = data.map(d => new Date(d.timestamp).toLocaleTimeString('en-IN'));
+                if (!data.length) return;
+
+                const labels = data.map(d => new Date(d.timestamp).toLocaleTimeString('en-IN', { hour12: false }));
                 const values = data.map(d => d[sensor]);
+
+                // Stats
+                const min = Math.min(...values);
+                const max = Math.max(...values);
+                const avg = values.reduce((a, b) => a + b, 0) / values.length;
+                document.getElementById('stat-min').textContent = min.toFixed(2);
+                document.getElementById('stat-avg').textContent = avg.toFixed(2);
+                document.getElementById('stat-max').textContent = max.toFixed(2);
 
                 new Chart(document.getElementById('sensorChart'), {
                     type: 'line',
@@ -39,25 +75,43 @@
                         datasets: [{
                             label: sensor,
                             data: values,
-                            borderColor: 'rgb(52, 211, 153)',
-                            backgroundColor: 'rgb(52 211 153 / 0.05)',
+                            borderColor: color,
+                            backgroundColor: color + '14',
                             borderWidth: 2,
                             pointRadius: 3,
-                            pointBackgroundColor: 'rgb(52, 211, 153)',
+                            pointBackgroundColor: color,
                             fill: true,
                             tension: 0.4
                         }]
                     },
                     options: {
                         responsive: true,
-                        plugins: { legend: { display: false } },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                borderColor: '#1e293b',
+                                borderWidth: 1,
+                                titleColor: '#94a3b8',
+                                bodyColor: '#f1f5f9',
+                                titleFont: { family: 'Space Mono', size: 10 },
+                                bodyFont:  { family: 'Space Mono', size: 12 }
+                            }
+                        },
                         scales: {
-                            x: { ticks: { color: '#475569', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#1e293b' } },
-                            y: { ticks: { color: '#475569', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#1e293b' } }
+                            x: {
+                                ticks: { color: '#475569', font: { family: 'Space Mono', size: 10 }, maxTicksLimit: 10 },
+                                grid:  { color: '#1e293b' }
+                            },
+                            y: {
+                                ticks: { color: '#475569', font: { family: 'Space Mono', size: 10 } },
+                                grid:  { color: '#1e293b' }
+                            }
                         }
                     }
                 });
-            });
+            })
+            .catch(err => console.error('Graph load failed:', err));
     </script>
 </body>
 </html>

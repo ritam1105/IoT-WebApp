@@ -1,54 +1,69 @@
+require('dotenv').config();
 const admin = require('firebase-admin');
 const SensorData = require('../models/sensorData');
-const serviceAccount = require('../serviceAccountKey.json');
 
-// Init Firebase
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: process.env.FireBase_URL
-});
-
-const db = admin.database();
-let isFetching = false;
-let intervalId = null;
-
-function toNumber(value) {
-    // Keep `0` as valid, but treat null/undefined/NaN as missing.
-    if (value === null || value === undefined) return undefined;
-    const n = Number(value);
-    if (!Number.isFinite(n)) return undefined;
-    return n;
+// Init Firebase only once (prevents "already exists" errors in dev reloads)
+if (!admin.apps.length) {
+    const serviceAccount = require('../serviceAccountKey.json');
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: process.env.FireBase_URL
+    });
 }
 
-// Fetch from Firebase and save to MongoDB
-async function fetchAndStore(userId) {
-    try {
-        const snapshot = await db.ref('/sensor_data').once('value');
-        const data = snapshot.val();
+const db = admin.database();
 
+let isFetching = false;
+let intervalId = null;
+let currentSessionId = null;
+let currentUserId = null;
+
+function toNumber(value) {
+    if (value === null || value === undefined) return undefined;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : undefined;
+}
+
+async function readSensorPayload() {
+    // Support both common paths; prefer /sensor_data when present.
+    const primary = await db.ref('/sensor_data').once('value');
+    if (primary.exists()) return primary.val();
+    const fallback = await db.ref('/sensor').once('value');
+    return fallback.val();
+}
+
+// Fetch from Firebase and save to MongoDB (bound to current user/session)
+async function fetchAndStore() {
+    try {
+        if (!currentUserId || !currentSessionId) return;
+
+        const data = await readSensorPayload();
         if (!data) return;
 
         const record = new SensorData({
-            userId,
-            temperature: data.temperature,
+            userId: currentUserId,
+            sessionId: currentSessionId,
+            temperature: toNumber(data.temperature),
             pH: toNumber(data.pH),
-            // Firebase publishes `water_level` (snake_case), but Mongo model uses `waterLevel`.
+            // Firebase may publish `water_level` (snake_case)
             waterLevel: toNumber(data.waterLevel ?? data.water_level),
             turbidity: toNumber(data.turbidity)
         });
 
         await record.save();
-        console.log('Saved:', record);
     } catch (err) {
-        console.error('Sync error:', err);
+        console.error('Sync error:', err?.message ?? err);
     }
 }
 
-function startFetching(userId) {
+function startFetching(userId, sessionId) {
     if (isFetching) return;
+    currentUserId = userId;
+    currentSessionId = sessionId;
+
     isFetching = true;
-    intervalId = setInterval(() => fetchAndStore(userId), 5000);
-    console.log('Fetching started');
+    fetchAndStore(); // immediate first fetch
+    intervalId = setInterval(fetchAndStore, 5000);
 }
 
 function stopFetching() {
@@ -56,11 +71,14 @@ function stopFetching() {
     clearInterval(intervalId);
     isFetching = false;
     intervalId = null;
-    console.log('Fetching stopped');
 }
 
 function getStatus() {
     return isFetching;
 }
 
-module.exports = { startFetching, stopFetching, getStatus };
+function getCurrentSession() {
+    return currentSessionId;
+}
+
+module.exports = { startFetching, stopFetching, getStatus, getCurrentSession };

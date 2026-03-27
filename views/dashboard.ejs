@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,36 +9,61 @@
     <title>Matri Ganga</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-        body { font-family: 'DM Sans', sans-serif; }
-        .mono { font-family: 'Space Mono', monospace; }
-        .sensor-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .sensor-card:hover { transform: translateY(-3px); }
-        .status-dot { animation: pulse 2s infinite; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .sensor-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sensor-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .status-dot {
+            animation: pulse 2s infinite;
+        }
+
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
         }
     </style>
 </head>
+
 <body class="bg-slate-950 text-slate-100 min-h-screen">
 
-    <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="max-w-7xl mx-auto px-6 py-8">
 
         <!-- Header -->
         <div class="flex items-center justify-between mb-10">
             <div class="flex items-center gap-4">
-                <img src="images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover opacity-90">
+                <img src="/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full object-cover opacity-90">
                 <div>
                     <h1 class="mono text-xl font-bold text-white tracking-tight">Matri Ganga</h1>
                     <div class="flex items-center gap-2 mt-0.5">
                         <span class="status-dot w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
-                        <span class="text-xs text-slate-400 mono">LIVE MONITORING</span>
+                        <span class="text-xs text-slate-400 mono" id="fetch-status">IDLE</span>
                     </div>
                 </div>
             </div>
             <div class="flex items-center gap-4">
                 <span class="text-slate-500 text-sm mono" id="live-time"></span>
-                <a href="index.html">
+                <a href="/">
                     <button id="dashboard-logout-btn"
                         class="mono text-xs px-4 py-2 rounded border border-slate-700 text-slate-400 hover:border-red-500 hover:text-red-400 transition-colors duration-200">
                         LOGOUT
@@ -50,7 +76,8 @@
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
 
             <!-- Temperature -->
-            <div class="temperature sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5">
+            <div
+                class="temperature sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">TEMP</span>
                     <span class="text-orange-400 text-lg">🌡</span>
@@ -62,7 +89,8 @@
             </div>
 
             <!-- Turbidity -->
-            <div class="turbidity sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-sky-500/5">
+            <div
+                class="turbidity sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-sky-500/40 hover:shadow-lg hover:shadow-sky-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">TURB</span>
                     <span class="text-sky-400 text-lg">💧</span>
@@ -74,7 +102,8 @@
             </div>
 
             <!-- pH -->
-            <div class="ph sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5">
+            <div
+                class="ph sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-violet-500/40 hover:shadow-lg hover:shadow-violet-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">PH</span>
                     <span class="text-violet-400 text-lg">⚗️</span>
@@ -86,7 +115,8 @@
             </div>
 
             <!-- Water Level -->
-            <div class="water-level sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-teal-500/40 hover:shadow-lg hover:shadow-teal-500/5">
+            <div
+                class="water-level sensor-card bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-teal-500/40 hover:shadow-lg hover:shadow-teal-500/5">
                 <div class="flex items-center justify-between mb-4">
                     <span class="text-xs mono text-slate-500 tracking-widest">LEVEL</span>
                     <span class="text-teal-400 text-lg">📊</span>
@@ -100,7 +130,8 @@
         </div>
 
         <!-- Water Quality Info -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div
+            class="bg-slate-900 border border-slate-800 rounded-2xl p-6 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h2 class="text-sm mono text-slate-400 tracking-widest">WATER QUALITY</h2>
             <div class="flex flex-col sm:flex-row gap-6">
                 <div>
@@ -125,22 +156,22 @@
                 class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-slate-800 hover:bg-red-500/20 border border-slate-700 hover:border-red-500/50 text-slate-300 hover:text-red-400 transition-all duration-200 tracking-widest">
                 ■ STOP
             </button>
-            <button id="restart"
-                class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-slate-800 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 text-slate-300 hover:text-amber-400 transition-all duration-200 tracking-widest">
-                ↺ RESTART
+            <button id="new-session"
+                class="flex-1 sm:flex-none mono text-xs font-bold px-6 py-3 rounded-xl bg-slate-800 hover:bg-violet-500/20 border border-slate-700 hover:border-violet-500/50 text-slate-300 hover:text-violet-400 transition-all duration-200 tracking-widest">
+                ＋ NEW
             </button>
         </div>
 
-        <!-- Data Table -->
+        <!-- Data Table — 7 columns now -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-            <div class="grid grid-cols-6 px-6 py-3 bg-slate-800/50 border-b border-slate-800">
-                <div class="mono text-xs text-slate-500 tracking-widest">ID</div>
+            <div class="grid grid-cols-7 px-6 py-3 bg-slate-800/50 border-b border-slate-800">
+                <div class="mono text-xs text-slate-500 tracking-widest">#</div>
                 <div class="mono text-xs text-slate-500 tracking-widest col-span-2">DATE & TIME</div>
                 <div class="mono text-xs text-slate-500 tracking-widest">TEMP (°C)</div>
                 <div class="mono text-xs text-slate-500 tracking-widest">TURB (NTU)</div>
-                <div class="mono text-xs text-slate-500 tracking-widest">pH / LEVEL</div>
+                <div class="mono text-xs text-slate-500 tracking-widest">pH</div>
+                <div class="mono text-xs text-slate-500 tracking-widest">LEVEL (cm)</div>
             </div>
-            <!-- Empty state -->
             <div class="data-list">
                 <div class="px-6 py-12 text-center empty-state">
                     <p class="mono text-slate-700 text-sm">No data received yet.</p>
@@ -150,8 +181,8 @@
         </div>
 
     </div>
+
     <script>
-        // Live clock
         function updateTime() {
             const el = document.getElementById('live-time');
             if (el) el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false });
@@ -161,4 +192,5 @@
     </script>
     <script src="/scripts/dashboard.js"></script>
 </body>
+
 </html>
