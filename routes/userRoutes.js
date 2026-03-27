@@ -5,7 +5,7 @@ const User    = require('../models/user');
 const auth    = require('../middleware/auth');
 
 // ─── Home ────────────────────────────────────────────────────────────────────
-router.get('/', auth, (req, res) => res.render('index', { user: req.session }));
+router.get('/', (req, res) => res.render('index'));
 
 // ─── Login ───────────────────────────────────────────────────────────────────
 router.get('/login', (req, res) => {
