@@ -15,8 +15,8 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "concurrently \"nodemon app.js\" \"npm run tw\"",
-    "tw": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css --watch --silent",
+    "start": "node app.js",
+    "tw": "tailwindcss -i ./views/input.css -o ./public/output.css",
     "build:css": "npx @tailwindcss/cli -i ./views/input.css -o ./public/output.css",
     "dev": "nodemon app.js"
   },
